@@ -1,4 +1,4 @@
-def plot_perf(history):
+def plot_perf(hist):
     fig, ax = plt.subplots(ncols = 3, figsize = (20, 5))
 
     ax[0].plot(hist.history['total_loss'], color='teal', label='loss')

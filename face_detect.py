@@ -7,6 +7,7 @@ import numpy as np
 from util import load_image, load_labels, visualise
 from neural_network import build_model, FaceTracker, localization_loss
 from eval_performance import plot_perf
+from predict import predict
 
 
 #LOADING THE DATA AND LOADING IT ONTO THE PIPELINE  
@@ -96,7 +97,13 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir= logdir)
 hist = model.fit(train, epochs=40, validation_data = val, callbacks = [tensorboard_callback])
 
 #PLOT PERFORMANCE METRICS
-plot_perf(hist.history)
+plot_perf(hist)
 
 
+#MAKE PREDICTIONS
+test_data = test.as_numpy_iterator()
+test_sample = test_data.next()
 
+y_pred = facetracker(test_sample[0])
+
+predict(test_sample, y_pred)
