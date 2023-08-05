@@ -1,3 +1,7 @@
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
+
 def predict(test_sample, y_pred):
     fig, ax = plt.subplots(ncols = 4 , figsize = (20, 20))
     for idx in range(4):

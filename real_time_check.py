@@ -13,7 +13,7 @@ while cap.isOpened():
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     resized = tf.image.resize(rgb, (120, 120))
 
-    y_hat = facetracker.predict(np.expand_dims(resized/255.0))
+    y_hat = facetracker.predict(np.expand_dims(resized/255.0, axis = 0))
     sample_coords = y_hat[1][0]
 
     if y_hat[0] > 0.5:
@@ -34,5 +34,5 @@ while cap.isOpened():
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-cap.realease()
+cap.release()
 cv2.destroyAllWindows()

@@ -80,6 +80,8 @@ res = data_samples.next()
 visualise(res)
 '''
 
+
+#TRAIN THE MODEL
 batches_per_epoch = len(train)
 lr_decay = (1.0/0.75 - 1)/batches_per_epoch
 
@@ -96,8 +98,22 @@ tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir= logdir)
 
 hist = model.fit(train, epochs=40, validation_data = val, callbacks = [tensorboard_callback])
 
+
+
 #PLOT PERFORMANCE METRICS
 plot_perf(hist)
+
+
+#SAVE AND LOAD THE MODEL
+import tensorflow as tf
+from tensorflow.keras.models import load_model
+import cv2
+import numpy as np
+
+facetracker.save('facetracker.h5')
+
+facetracker = load_model('facetracker.h5')
+
 
 
 #MAKE PREDICTIONS

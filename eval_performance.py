@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 def plot_perf(hist):
     fig, ax = plt.subplots(ncols = 3, figsize = (20, 5))
 

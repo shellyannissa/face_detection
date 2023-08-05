@@ -1,6 +1,9 @@
-
-
 import os
+import numpy as np
+import cv2
+import json
+
+
 def create_folder_structure(base_folder):
     if not os.path.exists(base_folder):
         os.mkdir(base_folder)
@@ -15,9 +18,9 @@ def create_folder_structure(base_folder):
             os.mkdir(os.path.join(folder_path,labels))
 
 
-import albumentations as alb 
-
 import albumentations as alb
+
+
 augmentor=alb.Compose([alb.RandomCrop(width=300, height= 300),
                        alb.HorizontalFlip(p = 0.5),
                        alb.RandomBrightnessContrast( p = 0.2 ),
@@ -32,11 +35,11 @@ augmentor=alb.Compose([alb.RandomCrop(width=300, height= 300),
 
 
 for partition in ['train', 'test', 'val']:
-    for image in os.listdir(os.path.join(aug_data, partition, 'images')):
-        img = cv2.imread(os.path.join(aug_data, partition, 'images', image))
+    for image in os.listdir(os.path.join('aug_data/', partition, 'images')):
+        img = cv2.imread(os.path.join('aug_data/', partition, 'images', image))
 
         coords = [0, 0, 0.00001, 0.00001]
-        label_path = os.path.join(aug_data, partition, 'labels', f'{image.split(".")[0]}.json')
+        label_path = os.path.join('aug_data/', partition, 'labels', f'{image.split(".")[0]}.json')
 
         if os.path.exists(label_path):
             with open(label_path, 'r') as f:
@@ -53,7 +56,7 @@ for partition in ['train', 'test', 'val']:
         try:
             for x in range(100):
                 augmented = augmentor(image=img, bboxes=[coords], class_labels=['face'])
-                cv2.imwrite(os.path.join(aug_data, 'aug_data', partition, 'images',
+                cv2.imwrite(os.path.join( 'aug_data', partition, 'images',
                                          f'{image.split(".")[0]}.{x}.jpg'),
                             augmented['image'])
                 annotation = {}
@@ -71,7 +74,7 @@ for partition in ['train', 'test', 'val']:
                     annotation['bbox'] = [0, 0, 0, 0]
                     annotation['class'] = 0
 
-                with open(os.path.join(aug_data, 'aug_data', partition, 'labels',
+                with open(os.path.join( 'aug_data', partition, 'labels',
                                        f'{image.split(".")[0]}.{x}.json'), 'w') as f:
                     json.dump(annotation, f)
 
